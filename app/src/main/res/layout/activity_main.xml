@@ -1,39 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/darker_gray"
+    android:orientation="vertical"
     tools:context="com.yurunsd.weatherstationmanager.MainActivity">
 
 
-    <include
-        layout="@layout/common_title_layout"
+    <RadioGroup
+        android:id="@+id/rg_main"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_constraintLeft_creator="1"
-        tools:layout_constraintTop_creator="1" />
-
-    <RadioGroup
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:background="@android:color/background_light"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent">
+        android:orientation="horizontal">
 
         <RadioButton
-            android:id="@+id/radioButton"
+            android:id="@+id/rb_homepage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:button="@null"
-            android:drawableTop="@drawable/ic_homepage"
+            android:checked="true"
+            android:drawableTop="@drawable/radio_home"
             android:gravity="center"
             android:padding="3dp"
             android:text="首页"
@@ -41,12 +31,12 @@
             android:textSize="12sp" />
 
         <RadioButton
-            android:id="@+id/radioButton2"
+            android:id="@+id/rb_near"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:button="@null"
-            android:drawableTop="@drawable/ic_coordinates"
+            android:drawableTop="@drawable/radio_coordinates"
             android:gravity="center"
             android:padding="3dp"
             android:text="附近"
@@ -54,12 +44,12 @@
             android:textSize="12sp" />
 
         <RadioButton
-            android:id="@+id/radioButton3"
+            android:id="@+id/rb_message"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:button="@null"
-            android:drawableTop="@drawable/ic_message"
+            android:drawableTop="@drawable/radio_message"
             android:gravity="center"
             android:padding="3dp"
             android:text="消息"
@@ -67,13 +57,12 @@
             android:textSize="12sp" />
 
         <RadioButton
-            android:id="@+id/radioButton4"
+            android:id="@+id/rb_mine"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:autoText="false"
             android:button="@null"
-            android:drawableTop="@drawable/ic_mine"
+            android:drawableTop="@drawable/radio_mine"
             android:gravity="center"
             android:padding="3dp"
             android:text="我的"
@@ -83,4 +72,11 @@
 
     </RadioGroup>
 
-</android.support.constraint.ConstraintLayout>
+    <RelativeLayout
+        android:id="@+id/fg_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/rg_main">
+
+    </RelativeLayout>
+</RelativeLayout>
