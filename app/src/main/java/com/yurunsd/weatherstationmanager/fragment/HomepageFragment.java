@@ -16,13 +16,29 @@ import android.widget.Toast;
 import com.yurunsd.weatherstationmanager.R;
 import com.yurunsd.weatherstationmanager.adapter.RecycAdapter;
 import com.yurunsd.weatherstationmanager.base.BaseFragment;
+import com.yurunsd.weatherstationmanager.utils.HttpUtils;
+import com.yurunsd.weatherstationmanager.utils.ToastUtils;
 import com.zwf.recyclerView.RecyclerViewWithEmptyView;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+
+import static com.yurunsd.weatherstationmanager.utils.GlobalConstants.WSDeviceItems_URL;
 
 public class HomepageFragment extends BaseFragment {
 
@@ -50,7 +66,6 @@ public class HomepageFragment extends BaseFragment {
         rv_init();
 
 
-
         return view;
     }
 
@@ -72,16 +87,33 @@ public class HomepageFragment extends BaseFragment {
         srlDeviceList.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                HttpUtils httpUtils = new HttpUtils();
+                Map<String, Object> map = new HashMap<String, Object>();
+                map.put("age", 12);
+                httpUtils.post(WSDeviceItems_URL, map, new HttpUtils.HttpCallback() {
 
-
-                mhandler.postDelayed(new Runnable() {
                     @Override
-                    public void run() {
+                    public void onStart() {
+                        super.onStart();
+                    }
+
+                    @Override
+                    public void onError(String msg) {
+                        super.onError(msg);
                         if (srlDeviceList.isRefreshing()) {
                             srlDeviceList.setRefreshing(false);
                         }
                     }
-                }, 2000);
+
+                    @Override
+                    public void onSuccess(String data) {
+                        System.out.println(data);
+                        if (srlDeviceList.isRefreshing()) {
+                            srlDeviceList.setRefreshing(false);
+                        }
+                    }
+                });
+
 
             }
         });

@@ -17,7 +17,8 @@
         android:id="@+id/sr_device_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/include_title">
+        android:layout_below="@+id/include_title"
+        android:background="@android:color/darker_gray">
 
         <com.zwf.recyclerView.RecyclerViewWithEmptyView
             android:id="@+id/rve_device_list"

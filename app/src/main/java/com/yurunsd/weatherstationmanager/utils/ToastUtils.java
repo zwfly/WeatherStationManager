@@ -38,6 +38,11 @@ public class ToastUtils {
             Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
     }
 
+    public static void showShort(Context context, String message) {
+        if (isShow)
+            Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+    }
+
     /**
      * 长时间显示Toast
      *
