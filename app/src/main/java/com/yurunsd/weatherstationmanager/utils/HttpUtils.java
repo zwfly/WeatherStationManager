@@ -4,12 +4,15 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 
+import org.apache.commons.lang3.ObjectUtils;
+
 import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.CookieJar;
 import okhttp3.FormBody;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -65,11 +68,13 @@ public class HttpUtils {
 
         onStart(callback);
 
+        client.cookieJar();
+
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 if (response.isSuccessful()) {
-                    onSuccess(callback, response.body().string());
+                    onSuccess(callback, response);
                 } else {
                     onError(callback, response.message());
                 }
@@ -131,7 +136,7 @@ public class HttpUtils {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 if (response.isSuccessful()) {
-                    onSuccess(callback, response.body().string());
+                    onSuccess(callback, response);
                 } else {
                     onError(callback, response.message());
                 }
@@ -171,8 +176,9 @@ public class HttpUtils {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
+
                 if (response.isSuccessful()) {
-                    onSuccess(callback, response.body().string());
+                    onSuccess(callback, response);
                 } else {
                     onError(callback, response.message());
                 }
@@ -205,15 +211,15 @@ public class HttpUtils {
         }
     }
 
-    private void onSuccess(final HttpCallback callback, final String data) {
+    private void onSuccess(final HttpCallback callback, final Response response) {
 
-        debug(data);
+        debug(ObjectUtils.defaultIfNull(response.body().toString(), ""));
 
         if (null != callback) {
             handler.post(new Runnable() {
                 public void run() {
                     // 需要在主线程的操作。
-                    callback.onSuccess(data);
+                    callback.onSuccess(response);
                 }
             });
         }
@@ -243,7 +249,7 @@ public class HttpUtils {
         }
 
         // 成功回调
-        public abstract void onSuccess(String data);
+        public abstract void onSuccess(Response response);
 
         // 失败回调
         public void onError(String msg) {

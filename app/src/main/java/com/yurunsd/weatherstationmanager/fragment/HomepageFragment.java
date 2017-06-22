@@ -1,5 +1,6 @@
 package com.yurunsd.weatherstationmanager.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -16,6 +17,8 @@ import android.widget.Toast;
 import com.yurunsd.weatherstationmanager.R;
 import com.yurunsd.weatherstationmanager.adapter.RecycAdapter;
 import com.yurunsd.weatherstationmanager.base.BaseFragment;
+import com.yurunsd.weatherstationmanager.login.LoginActivity;
+import com.yurunsd.weatherstationmanager.login.RegisterActivity;
 import com.yurunsd.weatherstationmanager.utils.HttpUtils;
 import com.yurunsd.weatherstationmanager.utils.ToastUtils;
 import com.zwf.recyclerView.RecyclerViewWithEmptyView;
@@ -106,15 +109,13 @@ public class HomepageFragment extends BaseFragment {
                     }
 
                     @Override
-                    public void onSuccess(String data) {
-                        System.out.println(data);
+                    public void onSuccess(Response response) {
+                        System.out.println(response.toString());
                         if (srlDeviceList.isRefreshing()) {
                             srlDeviceList.setRefreshing(false);
                         }
                     }
                 });
-
-
             }
         });
     }
@@ -139,12 +140,19 @@ public class HomepageFragment extends BaseFragment {
             @Override
             public void onItemClick(View itemView, int pos) {
                 Toast.makeText(getActivity(), "click " + pos, Toast.LENGTH_SHORT).show();
+
+                Intent intent = new Intent(getActivity(), RegisterActivity.class);
+                startActivity(intent);
+
             }
         });
         mAdapter.setOnItemLongClickListener(new RecycAdapter.OnItemLongClickListener() {
             @Override
             public void onItemLongClick(View itemView, int pos) {
                 Toast.makeText(getActivity(), "long click " + pos, Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getActivity(), LoginActivity.class);
+                startActivity(intent);
+
             }
         });
         //设置布局样式LayoutManager

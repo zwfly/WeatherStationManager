@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
+import com.yurunsd.weatherstationmanager.base.BaseActivity;
 import com.yurunsd.weatherstationmanager.base.BaseFragment;
 import com.yurunsd.weatherstationmanager.fragment.HomepageFragment;
 import com.yurunsd.weatherstationmanager.fragment.MessageFragment;
@@ -21,7 +22,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
 
     @Bind(R.id.rb_homepage)
