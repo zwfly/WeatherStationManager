@@ -12,12 +12,14 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.StringUtils;
 import com.yurunsd.weatherstationmanager.R;
 import com.yurunsd.weatherstationmanager.base.BaseActivity;
 import com.yurunsd.weatherstationmanager.utils.HttpUtils;
 import com.yurunsd.weatherstationmanager.utils.ToastUtils;
 import com.yurunsd.weatherstationmanager.utils.Utils;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -149,9 +151,23 @@ public class RegisterActivity extends BaseActivity {
             @Override
             public void onSuccess(Response response) {
 
-
-
-
+                if (progressDialog.isShowing()) {
+                    progressDialog.dismiss();
+                }
+                if (StringUtils.equals(response.header("isSuccess", "n"), "y")) {
+                    try {
+                        ToastUtils.showShort(RegisterActivity.this, response.body().string());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    finish();
+                } else {
+                    try {
+                        ToastUtils.showShort(RegisterActivity.this, response.body().string());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
 
             @Override
