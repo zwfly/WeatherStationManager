@@ -20,6 +20,7 @@ import com.yurunsd.weatherstationmanager.base.BaseFragment;
 import com.yurunsd.weatherstationmanager.login.LoginActivity;
 import com.yurunsd.weatherstationmanager.login.RegisterActivity;
 import com.yurunsd.weatherstationmanager.utils.HttpUtils;
+import com.yurunsd.weatherstationmanager.utils.OkHttpUtils;
 import com.yurunsd.weatherstationmanager.utils.ToastUtils;
 import com.zwf.recyclerView.RecyclerViewWithEmptyView;
 
@@ -41,6 +42,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
+import static com.yurunsd.weatherstationmanager.utils.GlobalConstants.UserDevices_URL;
 import static com.yurunsd.weatherstationmanager.utils.GlobalConstants.WSDeviceItems_URL;
 
 public class HomepageFragment extends BaseFragment {
@@ -90,32 +92,33 @@ public class HomepageFragment extends BaseFragment {
         srlDeviceList.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                HttpUtils httpUtils = new HttpUtils();
+
+                OkHttpUtils okHttpUtils = new OkHttpUtils(getActivity());
                 Map<String, Object> map = new HashMap<String, Object>();
-                map.put("age", 12);
-                httpUtils.post(WSDeviceItems_URL, map, new HttpUtils.HttpCallback() {
 
-                    @Override
-                    public void onStart() {
-                        super.onStart();
-                    }
+                //map.put("DeviceType", "ws");
 
+
+
+                okHttpUtils.post(UserDevices_URL, map, new Callback() {
                     @Override
-                    public void onError(String msg) {
-                        super.onError(msg);
+                    public void onFailure(Call call, IOException e) {
                         if (srlDeviceList.isRefreshing()) {
                             srlDeviceList.setRefreshing(false);
                         }
                     }
 
                     @Override
-                    public void onSuccess(Response response) {
-                        System.out.println(response.toString());
+                    public void onResponse(Call call, Response response) throws IOException {
                         if (srlDeviceList.isRefreshing()) {
                             srlDeviceList.setRefreshing(false);
                         }
+
+
                     }
                 });
+
+
             }
         });
     }

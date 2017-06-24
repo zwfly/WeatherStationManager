@@ -2,7 +2,10 @@ package com.yurunsd.weatherstationmanager.login;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -13,21 +16,33 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.StringUtils;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.yurunsd.weatherstationmanager.MainActivity;
 import com.yurunsd.weatherstationmanager.R;
 import com.yurunsd.weatherstationmanager.base.BaseActivity;
+import com.yurunsd.weatherstationmanager.login.store.CookieJarImpl;
 import com.yurunsd.weatherstationmanager.utils.HttpUtils;
 import com.yurunsd.weatherstationmanager.utils.ToastUtils;
 import com.yurunsd.weatherstationmanager.utils.Utils;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 
+import static com.yurunsd.weatherstationmanager.utils.GlobalConstants.UserLogin_URL;
 import static com.yurunsd.weatherstationmanager.utils.GlobalConstants.UserRegister_URL;
 
 public class RegisterActivity extends BaseActivity {
@@ -50,6 +65,10 @@ public class RegisterActivity extends BaseActivity {
     CheckBox cbClause;
     @Bind(R.id.btn_submit)
     Button btnSubmit;
+
+
+    Handler mhandler = new Handler(Looper.getMainLooper());
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,49 +156,75 @@ public class RegisterActivity extends BaseActivity {
     }
 
     private void send() {
+        RequestBody body = new FormBody.Builder()
+                .add("nickName", etRegisterUsername.getText().toString())
+                .add("name", etRegisterphoneNum.getText().toString())
+                .add("pwd", etRegisterConfirmPassword.getText().toString())
+                .build();
 
-        HttpUtils httpUtils = new HttpUtils();
+        Request request = new Request.Builder().post(body).url(UserRegister_URL).build();
 
-        Map<String, Object> map = new HashMap<>();
-
-        httpUtils.post(UserRegister_URL, map, new HttpUtils.HttpCallback() {
+        OkHttpClient client = new OkHttpClient().newBuilder().build();
+        client.newCall(request).enqueue(new Callback() {
             @Override
-            public void onStart() {
-                super.onStart();
-            }
-
-            @Override
-            public void onSuccess(Response response) {
+            public void onFailure(Call call, IOException e) {
 
                 if (progressDialog.isShowing()) {
                     progressDialog.dismiss();
                 }
-                if (StringUtils.equals(response.header("isSuccess", "n"), "y")) {
-                    try {
-                        ToastUtils.showShort(RegisterActivity.this, response.body().string());
-                    } catch (IOException e) {
-                        e.printStackTrace();
+                mhandler.post(new Runnable() {
+                    public void run() {
+                        ToastUtils.showShort(RegisterActivity.this, "服务器超时");
+
                     }
-                    finish();
+                });
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+
+                if (progressDialog.isShowing()) {
+                    progressDialog.dismiss();
+                }
+
+                String bodystring = response.body().string();
+                System.out.println("body " + bodystring);
+                Type type = new TypeToken<Map<String, String>>() {
+                }.getType();
+                Map<String, String> map = null;
+                try {
+                    map = new Gson().fromJson(bodystring, type);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                String isSuccess;
+                if (map != null) {
+                    isSuccess = map.get("isSuccess");
                 } else {
-                    try {
-                        ToastUtils.showShort(RegisterActivity.this, response.body().string());
-                    } catch (IOException e) {
-                        e.printStackTrace();
+                    isSuccess = "n";
+                }
+                final Map<String, String> finalMap = map;
+                mhandler.post(new Runnable() {
+                    public void run() {
+                        String msg = finalMap.get("msg");
+                        if (!StringUtils.equals(msg, null)) {
+                            ToastUtils.showLong(RegisterActivity.this, msg);
+                        } else {
+                            ToastUtils.showLong(RegisterActivity.this, "数据解析错误");
+                        }
                     }
+                });
+                if (StringUtils.equals(isSuccess, "y")) {
+
+                    finish();
+
+                } else if (StringUtils.equals(isSuccess, "n")) {
+
+
                 }
+
+
             }
-
-            @Override
-            public void onError(String msg) {
-                super.onError(msg);
-                if (progressDialog.isShowing()) {
-                    progressDialog.dismiss();
-                }
-                ToastUtils.showShort(RegisterActivity.this, "服务器超时");
-            }
-
-
         });
 
 

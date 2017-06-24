@@ -12,11 +12,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <android.support.constraint.ConstraintLayout
+    <WebView
+        android:id="@+id/webview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/include_title">
-
-    </android.support.constraint.ConstraintLayout>
+        android:layout_below="@+id/include_title" />
 
 </RelativeLayout>

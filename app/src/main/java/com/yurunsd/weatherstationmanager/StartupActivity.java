@@ -129,7 +129,7 @@ public class StartupActivity extends BaseActivity {
                         startActivity(intent);
                     }
                 });
-//                finish();
+                finish();
 
             }
 

@@ -31,7 +31,7 @@ public class HttpUtils {
 
     private OkHttpClient client;
     // 超时时间
-    public static final int TIMEOUT = 8;
+    public static final int TIMEOUT = 5;
 
     //json请求
     public static final MediaType JSON = MediaType
