@@ -13,6 +13,8 @@ public class GlobalConstants {
     public static final String UserInfo_URL = SERVER_URL + "/yurunsd/user/info";
     public static final String UserDevices_URL = SERVER_URL + "/yurunsd/user/devices";
 
+    public static final String UserDeviceAdd_URL = SERVER_URL + "/yurunsd/user/device/add";
+
     public static final String WSDeviceRecords_URL = SERVER_URL + "/yurunsd/weatherstation/device/records";
     public static final String WSDeviceItems_URL = SERVER_URL + "/yurunsd/weatherstation/device/items";
 

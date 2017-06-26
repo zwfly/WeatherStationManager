@@ -19,9 +19,8 @@ import com.yurunsd.weatherstationmanager.adapter.RecycAdapter;
 import com.yurunsd.weatherstationmanager.base.BaseFragment;
 import com.yurunsd.weatherstationmanager.login.LoginActivity;
 import com.yurunsd.weatherstationmanager.login.RegisterActivity;
-import com.yurunsd.weatherstationmanager.utils.HttpUtils;
+import com.yurunsd.weatherstationmanager.ui.AddDeviceActivity;
 import com.yurunsd.weatherstationmanager.utils.OkHttpUtils;
-import com.yurunsd.weatherstationmanager.utils.ToastUtils;
 import com.zwf.recyclerView.RecyclerViewWithEmptyView;
 
 import java.io.IOException;
@@ -29,21 +28,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
-import java.util.concurrent.TimeUnit;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import okhttp3.Call;
 import okhttp3.Callback;
-import okhttp3.FormBody;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
 import okhttp3.Response;
 
 import static com.yurunsd.weatherstationmanager.utils.GlobalConstants.UserDevices_URL;
-import static com.yurunsd.weatherstationmanager.utils.GlobalConstants.WSDeviceItems_URL;
 
 public class HomepageFragment extends BaseFragment {
 
@@ -78,7 +71,18 @@ public class HomepageFragment extends BaseFragment {
 //        tvTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
         tvTitle.setText("首页");
         ivReturn.setVisibility(View.INVISIBLE);
-        ivAdd.setVisibility(View.INVISIBLE);
+        ivAdd.setVisibility(View.VISIBLE);
+    }
+
+    @OnClick({R.id.iv_return, R.id.iv_add})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.iv_return:
+                break;
+            case R.id.iv_add:
+                startActivity(new Intent(getActivity(), AddDeviceActivity.class));
+                break;
+        }
     }
 
     /**
@@ -97,7 +101,6 @@ public class HomepageFragment extends BaseFragment {
                 Map<String, Object> map = new HashMap<String, Object>();
 
                 //map.put("DeviceType", "ws");
-
 
 
                 okHttpUtils.post(UserDevices_URL, map, new Callback() {
@@ -144,8 +147,6 @@ public class HomepageFragment extends BaseFragment {
             public void onItemClick(View itemView, int pos) {
                 Toast.makeText(getActivity(), "click " + pos, Toast.LENGTH_SHORT).show();
 
-                Intent intent = new Intent(getActivity(), RegisterActivity.class);
-                startActivity(intent);
 
             }
         });
@@ -153,8 +154,7 @@ public class HomepageFragment extends BaseFragment {
             @Override
             public void onItemLongClick(View itemView, int pos) {
                 Toast.makeText(getActivity(), "long click " + pos, Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(getActivity(), LoginActivity.class);
-                startActivity(intent);
+
 
             }
         });
@@ -185,4 +185,6 @@ public class HomepageFragment extends BaseFragment {
         super.onDestroyView();
         ButterKnife.unbind(this);
     }
+
+
 }

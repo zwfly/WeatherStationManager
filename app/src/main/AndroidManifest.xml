@@ -3,7 +3,6 @@
     package="com.yurunsd.weatherstationmanager">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
     <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
@@ -14,13 +13,11 @@
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
-    <!--该权限用于获取手机相机使用权限，比如发送图片动弹需要拍照-->
+    <!-- 该权限用于获取手机相机使用权限，比如发送图片动弹需要拍照 -->
     <uses-permission android:name="android.permission.CAMERA" />
-    <!--该权限用于获取手机相机使用闪光灯权限，比如二维码扫描需打开闪光灯-->
+    <!-- 该权限用于获取手机相机使用闪光灯权限，比如二维码扫描需打开闪光灯 -->
     <uses-permission android:name="android.permission.FLASHLIGHT" />
-
     <uses-permission android:name="android.permission.VIBRATE" />
-
 
     <!-- To auto-complete the email text field in the login form with the user's emails -->
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
@@ -45,12 +42,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity android:name=".MainActivity" />
         <activity android:name=".login.LoginActivity" />
         <activity android:name=".login.RegisterActivity" />
         <activity android:name=".login.common_title_layout" />
-
+        <activity android:name=".ui.AddDeviceActivity"></activity>
     </application>
 
 </manifest>

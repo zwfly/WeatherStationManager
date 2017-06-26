@@ -197,7 +197,7 @@ public class RegisterActivity extends BaseActivity {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                String isSuccess;
+                final String isSuccess;
                 if (map != null) {
                     isSuccess = map.get("isSuccess");
                 } else {
@@ -208,20 +208,22 @@ public class RegisterActivity extends BaseActivity {
                     public void run() {
                         String msg = finalMap.get("msg");
                         if (!StringUtils.equals(msg, null)) {
-                            ToastUtils.showLong(RegisterActivity.this, msg);
+                            ToastUtils.showShort(RegisterActivity.this, msg);
                         } else {
-                            ToastUtils.showLong(RegisterActivity.this, "数据解析错误");
+                            ToastUtils.showShort(RegisterActivity.this, "数据解析错误");
+                        }
+                        if (StringUtils.equals(isSuccess, "y")) {
+                            ToastUtils.showShort(RegisterActivity.this, "注册成功");
+
+                            finish();
+
+                        } else if (StringUtils.equals(isSuccess, "n")) {
+                            ToastUtils.showShort(RegisterActivity.this, "注册失败");
+
                         }
                     }
                 });
-                if (StringUtils.equals(isSuccess, "y")) {
 
-                    finish();
-
-                } else if (StringUtils.equals(isSuccess, "n")) {
-
-
-                }
 
 
             }
