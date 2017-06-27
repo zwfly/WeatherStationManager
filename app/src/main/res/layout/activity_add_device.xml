@@ -22,13 +22,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="32dp"
         android:text="UID:"
         android:textColor="@color/primary_text"
         android:textSize="18sp"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spn_devicetype"
-        android:layout_marginStart="16dp" />
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        app:layout_constraintTop_toBottomOf="@+id/include2" />
 
     <EditText
         android:id="@+id/et_uid"
@@ -36,27 +36,16 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
+        android:singleLine="true"
         android:ems="10"
         android:hint="设备唯一编码"
-        android:inputType="textPassword"
+        android:digits="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
         android:textColor="@color/primary_text"
         android:textColorHint="@color/secondary_text"
         app:layout_constraintBottom_toBottomOf="@+id/textView5"
         app:layout_constraintLeft_toRightOf="@+id/textView5"
         app:layout_constraintTop_toTopOf="@+id/textView5"
         app:layout_constraintVertical_bias="0.333" />
-
-    <Spinner
-        android:id="@+id/spn_devicetype"
-        android:layout_width="120dp"
-        android:layout_height="50dp"
-        android:layout_marginBottom="0dp"
-        android:layout_marginLeft="32dp"
-        android:layout_marginTop="0dp"
-        android:background="@drawable/btn_style_white"
-        app:layout_constraintBottom_toBottomOf="@+id/textView6"
-        app:layout_constraintLeft_toRightOf="@+id/textView6"
-        app:layout_constraintTop_toTopOf="@+id/textView6" />
 
     <Button
         android:id="@+id/btn_add"
@@ -68,15 +57,4 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
-    <TextView
-        android:id="@+id/textView6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
-        android:text="设备类型:"
-        android:textSize="18sp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/include2" />
 </android.support.constraint.ConstraintLayout>

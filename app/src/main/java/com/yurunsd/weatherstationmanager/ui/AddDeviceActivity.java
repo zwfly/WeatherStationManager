@@ -41,7 +41,6 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 import static com.yurunsd.weatherstationmanager.utils.GlobalConstants.UserDeviceAdd_URL;
-import static com.yurunsd.weatherstationmanager.utils.GlobalConstants.UserLogin_URL;
 
 public class AddDeviceActivity extends AppCompatActivity {
 
@@ -55,8 +54,6 @@ public class AddDeviceActivity extends AppCompatActivity {
     TextView textView5;
     @Bind(R.id.et_uid)
     EditText etUid;
-    @Bind(R.id.spn_devicetype)
-    Spinner spnDevicetype;
     @Bind(R.id.btn_add)
     Button btnAdd;
 
@@ -89,23 +86,6 @@ public class AddDeviceActivity extends AppCompatActivity {
 
     private void body_init() {
 
-        ArrayAdapter<String> ada = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,
-                getResources().getStringArray(R.array.deviceType));
-        ada.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spnDevicetype.setAdapter(ada);
-        spnDevicetype.setSelection(0);
-        spnDevicetype.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
-
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                System.out.println("spnDevicetype onItemSelected " + position);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                System.out.println("spnDevicetype onNothingSelected " + parent.getCount());
-            }
-        });
     }
 
 
@@ -122,11 +102,10 @@ public class AddDeviceActivity extends AppCompatActivity {
             case R.id.btn_add:
 
 
-                if (etUid.getText().toString().length() < 16) {
+                if (etUid.getText().toString().length() < 10) {
                     ToastUtils.showShort(getApplicationContext(), "输入有误");
                 } else {
-                    int type = 2 + spnDevicetype.getSelectedItemPosition();
-                    addDevice(type, etUid.getText().toString());
+                    addDevice(etUid.getText().toString());
 
                     btnAdd.setText(btnAdd.getText() + "...");
                     btnAdd.setEnabled(false);
@@ -140,13 +119,10 @@ public class AddDeviceActivity extends AppCompatActivity {
     Handler mhandler = new Handler(Looper.getMainLooper());
     private PersistentCookieStore persistentCookieStore;
 
-    private void addDevice(int type, String uid) {
+    private void addDevice(String uid) {
         MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
-        System.out.println(type + ", " + uid);
-
         RequestBody body = new FormBody.Builder()
-                .add("type", String.valueOf(type))
                 .add("uid", uid)
                 .build();
 
@@ -177,30 +153,30 @@ public class AddDeviceActivity extends AppCompatActivity {
                 }.getType();
                 final Map<String, String> map = new Gson().fromJson(bodystring, type);
 
-                final String isSuccess = map.get("isSuccess");
+//                final String isSuccess = map.get("isSuccess");
                 mhandler.post(new Runnable() {
                     public void run() {
+                        if (map == null) {
+                            ToastUtils.showLong(AddDeviceActivity.this, "数据发生错误");
+                            return;
+                        }
                         String msg = map.get("msg");
                         if (!StringUtils.equals(msg, null)) {
-                            ToastUtils.showLong(AddDeviceActivity.this, msg);
-                        } else {
-                            ToastUtils.showLong(AddDeviceActivity.this, "数据解析错误");
+                            ToastUtils.showShort(AddDeviceActivity.this, msg);
                         }
-                        if (StringUtils.equals(isSuccess, "y")) {
-                            ToastUtils.showShort(getApplicationContext(), "添加成功");
 
-                            finish();
-                        } else if (StringUtils.equals(isSuccess, "n")) {
 
-                            ToastUtils.showShort(getApplicationContext(), "添加失败");
-
-                        }
                         btnAdd.setText("添加");
                         btnAdd.setEnabled(true);
                     }
                 });
 
+                String isOK = map.get("isSuccess");
 
+                if (StringUtils.equals(isOK, "y")) {
+
+                    finish();
+                }
             }
         });
 

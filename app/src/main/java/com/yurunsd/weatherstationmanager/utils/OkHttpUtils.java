@@ -78,7 +78,7 @@ public class OkHttpUtils {
 
         OkHttpClient client = new OkHttpClient().newBuilder().cookieJar(cookieJarImpl).build();
 
-        Request request = new Request.Builder().post(builder.build()).url(UserLogin_URL).build();
+        Request request = new Request.Builder().post(builder.build()).url(url).build();
 
         client.newCall(request).enqueue(callback);
 

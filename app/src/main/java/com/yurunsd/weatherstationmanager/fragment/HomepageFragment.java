@@ -36,7 +36,7 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 
-import static com.yurunsd.weatherstationmanager.utils.GlobalConstants.UserDevices_URL;
+import static com.yurunsd.weatherstationmanager.utils.GlobalConstants.UserQueryDevices_URL;
 
 public class HomepageFragment extends BaseFragment {
 
@@ -102,20 +102,30 @@ public class HomepageFragment extends BaseFragment {
 
                 //map.put("DeviceType", "ws");
 
-
-                okHttpUtils.post(UserDevices_URL, map, new Callback() {
+                okHttpUtils.post(UserQueryDevices_URL, map, new Callback() {
                     @Override
                     public void onFailure(Call call, IOException e) {
-                        if (srlDeviceList.isRefreshing()) {
-                            srlDeviceList.setRefreshing(false);
-                        }
+                        mhandler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (srlDeviceList.isRefreshing()) {
+                                    srlDeviceList.setRefreshing(false);
+                                }
+                            }
+                        }, 300);
+
                     }
 
                     @Override
                     public void onResponse(Call call, Response response) throws IOException {
-                        if (srlDeviceList.isRefreshing()) {
-                            srlDeviceList.setRefreshing(false);
-                        }
+                        mhandler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (srlDeviceList.isRefreshing()) {
+                                    srlDeviceList.setRefreshing(false);
+                                }
+                            }
+                        }, 300);
 
 
                     }
