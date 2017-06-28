@@ -7,8 +7,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.baidu.mapapi.map.MapView;
 import com.yurunsd.weatherstationmanager.R;
 import com.yurunsd.weatherstationmanager.base.BaseFragment;
+
+import org.apache.commons.lang3.ObjectUtils;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -26,6 +29,15 @@ public class NearbyFragment extends BaseFragment {
     ImageView ivAdd;
     @Bind(R.id.tv_title)
     TextView tvTitle;
+
+    @Bind(R.id.bmapView)
+    MapView bmapView;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -51,11 +63,6 @@ public class NearbyFragment extends BaseFragment {
 
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        ButterKnife.unbind(this);
-    }
 
     @OnClick({R.id.iv_return, R.id.iv_add, R.id.tv_title})
     public void onViewClicked(View view) {
@@ -68,4 +75,35 @@ public class NearbyFragment extends BaseFragment {
                 break;
         }
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        //在activity执行onDestroy时执行mMapView.onDestroy()，实现地图生命周期管理
+        if (ObjectUtils.notEqual(bmapView,null)) {
+            bmapView.onDestroy();
+        }
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        //在activity执行onResume时执行mMapView. onResume ()，实现地图生命周期管理
+        bmapView.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        //在activity执行onPause时执行mMapView. onPause ()，实现地图生命周期管理
+        bmapView.onPause();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.unbind(this);
+    }
 }
+

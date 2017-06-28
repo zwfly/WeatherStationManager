@@ -14,20 +14,28 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.yurunsd.weatherstationmanager.R;
 import com.yurunsd.weatherstationmanager.adapter.RecycAdapter;
 import com.yurunsd.weatherstationmanager.base.BaseFragment;
 import com.yurunsd.weatherstationmanager.login.LoginActivity;
 import com.yurunsd.weatherstationmanager.login.RegisterActivity;
 import com.yurunsd.weatherstationmanager.ui.AddDeviceActivity;
+import com.yurunsd.weatherstationmanager.ui.DetailWeatherStationActivity;
+import com.yurunsd.weatherstationmanager.utils.JSONUtils;
 import com.yurunsd.weatherstationmanager.utils.OkHttpUtils;
 import com.zwf.recyclerView.RecyclerViewWithEmptyView;
 
 import java.io.IOException;
+import java.io.Serializable;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.StringTokenizer;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -126,7 +134,30 @@ public class HomepageFragment extends BaseFragment {
                                 }
                             }
                         }, 300);
+                        String s = response.body().string();
+//                        System.out.println("response " + s);
 
+                        if (s == null) {
+                            return;
+                        }
+
+                        Type type = new TypeToken<Map<String, Object>>() {
+                        }.getType();
+                        Map<String, Object> map = new Gson().fromJson(s, type);
+                        mList = (List<Map<String, Object>>) map.get("list");
+
+                        System.out.println("mList: " + new Gson().toJson(mList));
+
+                        mhandler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                mAdapter.clear();
+                                for (int i = 0; i < mList.size(); i++) {
+                                    mAdapter.add(i, mList.get(i));
+                                }
+                            }
+                        });
+//
 
                     }
                 });
@@ -139,24 +170,27 @@ public class HomepageFragment extends BaseFragment {
     /**
      * RecyclerView 初始化
      */
-    List<String> mDataList;
+    List<Map<String, Object>> mList;
 
     private void rv_init() {
-        mDataList = new ArrayList<>();
-        for (int i = 0; i <= 20; i++) {
-            mDataList.add(String.valueOf(i));
-        }
+        mList = new ArrayList<Map<String, Object>>();
+
         //设置item动画
         rveDeviceList.setItemAnimator(new DefaultItemAnimator());
-        mAdapter = new RecycAdapter<>(getActivity(), mDataList);
+        mAdapter = new RecycAdapter(getActivity(), mList);
 //        adapterWrapper = new MultiSelectItemAdapterWrapper(mAdapter);
         rveDeviceList.setAdapter(mAdapter);
         //添加item点击事件监听
         mAdapter.setOnItemClickListener(new RecycAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View itemView, int pos) {
-                Toast.makeText(getActivity(), "click " + pos, Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getActivity(), "click " + pos, Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getActivity(), DetailWeatherStationActivity.class);
+                Bundle bundle = new Bundle();
 
+                bundle.putSerializable("map", (Serializable) mList.get(pos));
+                intent.putExtras(bundle);
+                startActivity(intent);
 
             }
         });

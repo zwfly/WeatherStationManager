@@ -17,6 +17,14 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/include_title">
 
+
+        <com.baidu.mapapi.map.MapView
+            android:id="@+id/bmapView"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:clickable="true" />
+
+
     </android.support.constraint.ConstraintLayout>
 
 </RelativeLayout>

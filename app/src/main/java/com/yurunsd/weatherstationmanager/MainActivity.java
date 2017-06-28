@@ -1,12 +1,11 @@
 package com.yurunsd.weatherstationmanager;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.RadioButton;
-import android.widget.TextView;
 
 import com.yurunsd.weatherstationmanager.base.BaseActivity;
 import com.yurunsd.weatherstationmanager.base.BaseFragment;
@@ -49,7 +48,7 @@ public class MainActivity extends BaseActivity {
         fragments.add(new MessageFragment());
         fragments.add(new MineFragment());
 
-        switchFragment(0);
+        setDefaultFragment(fragments.get(0));
     }
 
     @OnClick({R.id.rb_homepage, R.id.rb_near, R.id.rb_message, R.id.rb_mine})
@@ -71,9 +70,49 @@ public class MainActivity extends BaseActivity {
     }
 
     private void switchFragment(int index) {
-        ft = getSupportFragmentManager().beginTransaction();
-        //    ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-        ft.replace(R.id.fg_container, fragments.get(index));
-        ft.commit();
+
+
+        switchContent(fragments.get(index));
+
+    }
+
+    private FragmentManager mFm;
+    private Fragment mContent;
+
+    /**
+     * 设置默认的fragment，即//第一次加载界面;
+     */
+    private void setDefaultFragment(Fragment fm) {
+        mFm = getSupportFragmentManager();
+        FragmentTransaction mFragmentTrans = mFm.beginTransaction();
+
+        mFragmentTrans.add(R.id.fg_container, fm).commit();
+
+        mContent = fm;
+    }
+
+    /**
+     * 修改显示的内容 不会重新加载 *
+     */
+    public void switchContent(Fragment to) {
+        if (mContent != to) {
+            FragmentTransaction transaction = mFm.beginTransaction();
+            if (!to.isAdded()) { // 先判断是否被add过
+                transaction.hide(mContent).add(R.id.fg_container, to).commit(); // 隐藏当前的fragment，add下一个到Activity中
+            } else {
+                transaction.hide(mContent).show(to).commit(); // 隐藏当前的fragment，显示下一个
+            }
+            mContent = to;
+        }
+    }
+
+    /**
+     * 修改显示的内容 但会重新加载 *
+     */
+    public void switchContent2(Fragment to) {
+        FragmentTransaction transaction = mFm.beginTransaction();
+        transaction.replace(R.id.fg_container, to);
+        //transaction.addToBackStack(null);
+        transaction.commit();
     }
 }

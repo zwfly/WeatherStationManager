@@ -35,6 +35,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/myAppTheme">
+        <meta-data
+            android:name="com.baidu.lbsapi.API_KEY"
+            android:value="开发者 key" />
+
         <activity android:name=".StartupActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -46,7 +50,9 @@
         <activity android:name=".login.LoginActivity" />
         <activity android:name=".login.RegisterActivity" />
         <activity android:name=".login.common_title_layout" />
-        <activity android:name=".ui.AddDeviceActivity"></activity>
+        <activity android:name=".ui.AddDeviceActivity" />
+        <activity android:name=".ui.DetailWeatherStationActivity" />
+        <activity android:name=".ui.WeatherStationSetupActivity"></activity>
     </application>
 
 </manifest>
