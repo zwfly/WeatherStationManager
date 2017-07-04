@@ -11,7 +11,8 @@
     <color name="divider">#BDBDBD</color>
 
 
-
+    <color name="lighter_gray">#ddd</color>
+    <color name="darker_gray">#aaa</color>
 
     <color name="layout_back">#d2e9ff</color>
 

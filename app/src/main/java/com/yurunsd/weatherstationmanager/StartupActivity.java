@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.blankj.utilcode.util.StringUtils;
 import com.blankj.utilcode.util.Utils;
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import com.litesuits.common.utils.TelephoneUtil;
 import com.yurunsd.weatherstationmanager.base.BaseActivity;
@@ -138,14 +139,29 @@ public class StartupActivity extends BaseActivity {
 
                 String bodystring = response.body().string();
                 System.out.println("body " + bodystring);
+                if (StringUtils.equals(bodystring, "") || StringUtils.equals(bodystring, null)) {
+                    Intent intent = new Intent(StartupActivity.this, LoginActivity.class);
+                    startActivity(intent);
+
+                    finish();
+                    return;
+                }
                 Type type = new TypeToken<Map<String, String>>() {
                 }.getType();
-                final Map<String, String> map = new Gson().fromJson(bodystring, type);
+
+                Map<String, String> map = new HashMap<String, String>();
+                try {
+                    map = new Gson().fromJson(bodystring, type);
+                } catch (JsonSyntaxException e) {
+                    e.printStackTrace();
+                    //return;
+                }
 
                 String isSuccess = map.get("isSuccess");
+                final String msg = map.get("msg");
                 mhandler.post(new Runnable() {
                     public void run() {
-                        String msg = map.get("msg");
+
                         if (!StringUtils.equals(msg, null)) {
                             ToastUtils.showLong(StartupActivity.this, msg);
                         } else {
@@ -157,14 +173,12 @@ public class StartupActivity extends BaseActivity {
                     Intent intent = new Intent(StartupActivity.this, MainActivity.class);
                     startActivity(intent);
 
-                    finish();
-                } else if (StringUtils.equals(isSuccess, "n")) {
+                } else {
                     Intent intent = new Intent(StartupActivity.this, LoginActivity.class);
                     startActivity(intent);
 
-                    finish();
                 }
-
+                finish();
 
             }
         });

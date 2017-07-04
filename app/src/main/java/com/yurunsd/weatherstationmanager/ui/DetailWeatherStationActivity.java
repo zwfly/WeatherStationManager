@@ -15,6 +15,7 @@ import com.yurunsd.weatherstationmanager.login.store.PersistentCookieStore;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import java.io.Serializable;
 import java.util.Map;
 
 import butterknife.Bind;
@@ -122,14 +123,14 @@ public class DetailWeatherStationActivity extends AppCompatActivity {
 
         tvLeftInfo1.setText((map.get("deviceAddr") == null) ? "" : (String) map.get("deviceAddr"));
 
-        tvRightInfo1.setText((map.get("temperature") == null) ? "" : "温度: " + map.get("temperature") + " ℃");
-        tvRightInfo2.setText((map.get("humidity") == null) ? "" : "湿度: " + map.get("humidity") + " %");
+        tvRightInfo1.setText((map.get("temperature") == null) ? "温度: 空" : "温度: " + map.get("temperature") + " ℃");
+        tvRightInfo2.setText((map.get("humidity") == null) ? "湿度: 空" : "湿度: " + map.get("humidity") + " %");
 
-        tvRightInfo3.setText((map.get("PM2d5") == null) ? "" : "PM2.5: " + ((Double) map.get("PM2d5")).intValue() + " ug/m3");
-        tvRightInfo4.setText((map.get("PM10") == null) ? "" : "PM10 : " + ((Double) map.get("PM10")).intValue() + " ug/m3");
+        tvRightInfo3.setText((map.get("PM2d5") == null) ? "PM2.5: 空" : "PM2.5: " + ((Double) map.get("PM2d5")).intValue() + " ug/m3");
+        tvRightInfo4.setText((map.get("PM10") == null) ? "PM10 : 空" : "PM10 : " + ((Double) map.get("PM10")).intValue() + " ug/m3");
 
-        tvRightInfo5.setText((map.get("windSpeed") == null) ? "" : "风速: " + map.get("windSpeed") + "m/s");
-        tvRightInfo6.setText((map.get("windDirection") == null) ? "" : "风向: " + map.get("windDirection"));
+        tvRightInfo5.setText((map.get("windSpeed") == null) ? "风速: 空" : "风速: " + map.get("windSpeed") + "m/s");
+        tvRightInfo6.setText((map.get("windDirection") == null) ? "风向: 空" : "风向: " + map.get("windDirection"));
 
 
     }
@@ -140,22 +141,71 @@ public class DetailWeatherStationActivity extends AppCompatActivity {
             case R.id.iv_return:
                 finish();
                 break;
-            case R.id.iv_add:
+            case R.id.iv_add: {
                 Intent intent = new Intent(DetailWeatherStationActivity.this, WeatherStationSetupActivity.class);
+                Bundle bundle = new Bundle();
+
+                bundle.putSerializable("map", (Serializable) map);
+                intent.putExtras(bundle);
                 startActivity(intent);
-                break;
-            case R.id.layout_right_info1:
-                break;
-            case R.id.layout_right_info2:
-                break;
-            case R.id.layout_right_info3:
-                break;
-            case R.id.layout_right_info4:
-                break;
-            case R.id.layout_right_info5:
-                break;
-            case R.id.layout_right_info6:
-                break;
+            }
+            break;
+            case R.id.layout_right_info1: {
+                Intent intent = new Intent(DetailWeatherStationActivity.this, HistoryActivity.class);
+                Bundle bundle = new Bundle();
+                map.put("target", "temperature");
+                bundle.putSerializable("map", (Serializable) map);
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
+
+            break;
+            case R.id.layout_right_info2: {
+                Intent intent = new Intent(DetailWeatherStationActivity.this, HistoryActivity.class);
+                Bundle bundle = new Bundle();
+                map.put("target", "humidity");
+                bundle.putSerializable("map", (Serializable) map);
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
+            break;
+            case R.id.layout_right_info3: {
+                Intent intent = new Intent(DetailWeatherStationActivity.this, HistoryActivity.class);
+                Bundle bundle = new Bundle();
+                map.put("target", "PM2d5");
+                bundle.putSerializable("map", (Serializable) map);
+                intent.putExtras(bundle);
+                startActivity(intent);
+
+            }
+            break;
+            case R.id.layout_right_info4: {
+                Intent intent = new Intent(DetailWeatherStationActivity.this, HistoryActivity.class);
+                Bundle bundle = new Bundle();
+                map.put("target", "PM10");
+                bundle.putSerializable("map", (Serializable) map);
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
+            break;
+            case R.id.layout_right_info5: {
+                Intent intent = new Intent(DetailWeatherStationActivity.this, HistoryActivity.class);
+                Bundle bundle = new Bundle();
+                map.put("target", "windSpeed");
+                bundle.putSerializable("map", (Serializable) map);
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
+            break;
+            case R.id.layout_right_info6: {
+//                Intent intent = new Intent(DetailWeatherStationActivity.this, HistoryActivity.class);
+//                Bundle bundle = new Bundle();
+//                map.put("target", "windDirection");
+//                bundle.putSerializable("map", (Serializable) map);
+//                intent.putExtras(bundle);
+//                startActivity(intent);
+            }
+            break;
         }
     }
 }

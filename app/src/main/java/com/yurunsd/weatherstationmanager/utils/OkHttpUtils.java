@@ -41,7 +41,7 @@ public class OkHttpUtils {
 
     private PersistentCookieStore persistentCookieStore;
 
-    private Handler handler = new Handler(Looper.getMainLooper());
+//    private Handler handler = new Handler(Looper.getMainLooper());
 
     public OkHttpUtils(Context context) {
         this.init(context);
@@ -78,7 +78,7 @@ public class OkHttpUtils {
 
         OkHttpClient client = new OkHttpClient().newBuilder().cookieJar(cookieJarImpl).build();
 
-        Request request = new Request.Builder().post(builder.build()).url(url).build();
+        Request request = new Request.Builder().url(url).post(builder.build()).build();
 
         client.newCall(request).enqueue(callback);
 

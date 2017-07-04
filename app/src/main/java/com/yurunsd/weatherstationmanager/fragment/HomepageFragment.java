@@ -44,7 +44,8 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 
-import static com.yurunsd.weatherstationmanager.utils.GlobalConstants.UserQueryDevices_URL;
+import static com.yurunsd.weatherstationmanager.utils.GlobalConstants.UserDeviceItem_URL;
+
 
 public class HomepageFragment extends BaseFragment {
 
@@ -110,7 +111,7 @@ public class HomepageFragment extends BaseFragment {
 
                 //map.put("DeviceType", "ws");
 
-                okHttpUtils.post(UserQueryDevices_URL, map, new Callback() {
+                okHttpUtils.post(UserDeviceItem_URL, map, new Callback() {
                     @Override
                     public void onFailure(Call call, IOException e) {
                         mhandler.postDelayed(new Runnable() {

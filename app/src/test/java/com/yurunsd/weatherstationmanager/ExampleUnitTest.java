@@ -1,6 +1,12 @@
 package com.yurunsd.weatherstationmanager;
 
+import com.yurunsd.weatherstationmanager.utils.HttpUtils;
+
 import org.junit.Test;
+
+import java.io.IOException;
+
+import okhttp3.Response;
 
 import static org.junit.Assert.*;
 
@@ -20,5 +26,17 @@ public class ExampleUnitTest {
     public void exp1(){
 
 
+        HttpUtils httpUtils = new HttpUtils();
+
+        httpUtils.get("www.baidu.com", null, new HttpUtils.HttpCallback() {
+            @Override
+            public void onSuccess(Response response) {
+                try {
+                    System.out.println(response.body().string());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 }

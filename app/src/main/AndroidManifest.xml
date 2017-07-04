@@ -52,7 +52,8 @@
         <activity android:name=".login.common_title_layout" />
         <activity android:name=".ui.AddDeviceActivity" />
         <activity android:name=".ui.DetailWeatherStationActivity" />
-        <activity android:name=".ui.WeatherStationSetupActivity"></activity>
+        <activity android:name=".ui.WeatherStationSetupActivity" />
+        <activity android:name=".ui.HistoryActivity"></activity>
     </application>
 
 </manifest>

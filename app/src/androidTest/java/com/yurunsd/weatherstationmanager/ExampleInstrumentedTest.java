@@ -4,8 +4,14 @@ import android.content.Context;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
+import com.yurunsd.weatherstationmanager.utils.HttpUtils;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import java.io.IOException;
+
+import okhttp3.Response;
 
 import static org.junit.Assert.*;
 
@@ -18,9 +24,22 @@ import static org.junit.Assert.*;
 public class ExampleInstrumentedTest {
     @Test
     public void useAppContext() throws Exception {
-        // Context of the app under test.
-        Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.yurunsd.weatherstationmanager", appContext.getPackageName());
+
+
+        HttpUtils httpUtils = new HttpUtils();
+        System.out.println("http start");
+        httpUtils.get("http://www.baidu.com", null, new HttpUtils.HttpCallback() {
+            @Override
+            public void onSuccess(Response response) {
+                try {
+                    System.out.println(response.body().string());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                System.out.println("http onSuccess");
+            }
+        });
+
     }
 }

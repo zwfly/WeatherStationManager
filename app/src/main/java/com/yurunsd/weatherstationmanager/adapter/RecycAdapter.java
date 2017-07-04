@@ -13,6 +13,8 @@ import android.widget.TextView;
 
 import com.yurunsd.weatherstationmanager.R;
 
+import org.apache.commons.beanutils.BeanUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -76,10 +78,10 @@ public class RecycAdapter extends RecyclerView.Adapter<RecycAdapter.ViewHolder> 
         switch ((String) map.get("deviceType")) {
             case "2":
 
-                holder.tvItem1.setText("温度: " + map.get("temperature") + " ℃");
-                holder.tvItem2.setText("湿度: " + map.get("humidity") + " %");
-                holder.tvItem3.setText("PM2.5: " + ((Double) map.get("PM2d5")).intValue() + " ug/m3");
-                holder.tvItem4.setText("风速: " + map.get("windSpeed") + " m/s");
+                holder.tvItem1.setText("温度: " + ((map.get("temperature") == null) ? "空" : map.get("temperature")) + " ℃");
+                holder.tvItem2.setText("湿度: " + ((map.get("humidity") == null) ? "空" : map.get("humidity")) + " %");
+                holder.tvItem3.setText("PM2.5: " + ((map.get("PM2d5") == null ? "空" : ((Double) map.get("PM2d5")).intValue())) + " ug/m3");
+                holder.tvItem4.setText("风速: " + (map.get("windSpeed") == null ? "空" : map.get("windSpeed")) + " m/s");
                 holder.tvAddr.setText("" + map.get("deviceAddr"));
 
                 break;

@@ -11,6 +11,7 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -26,9 +27,9 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     compile files('libs/BaiduLBS_Android.jar')
+    compile files('libs/commons-logging-1.2.jar')
     compile 'org.apache.commons:commons-lang3:3.5'
     compile 'commons-beanutils:commons-beanutils:1.9.3'
-    compile 'commons-logging:commons-logging:1.2'
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.jakewharton:butterknife:7.0.0'
     compile 'com.squareup.okhttp3:okhttp:3.8.0'
@@ -45,4 +46,8 @@ dependencies {
     compile 'com.luffykou:android-common-utils:1.1.3'
     compile 'com.github.lecho:hellocharts-library:1.5.8@aar'
     testCompile 'junit:junit:4.12'
+    compile files('libs/EZOpenSDK_V4.5.0.20170605.jar')
+    compile files('libs/EZUIKit_1.1.0.jar')
+    compile files('libs/jmdns-3.4.1.jar')
+    compile files('libs/zxing.jar')
 }
